@@ -1,33 +1,6 @@
 version: '2'
 
 services:
-  kea:
-    #build: .
-    image: mhiro2/kea-dhcp-server:latest
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./kea-dhcp4.conf:/usr/local/etc/kea/kea-dhcp4.conf
-    networks:
-      - wan
-    depends_on:
-      - kea-db
-    restart: always
-
-  kea-db:
-    image: mysql:5.7
-    ports:
-      - 127.0.0.1:3306:3306
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - kea-db_data:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d
-    networks:
-      - wan
-    environment:
-      MYSQL_DATABASE: dhcpdb
-      MYSQL_ROOT_PASSWORD: dhcpdb
-    restart: always
-
   vcpe1:
     image: registry.cn-hangzhou.aliyuncs.com/sdwan/vcpe:V501-v4.0.0-4.0.0-16-gbe90892
     container_name: "vcpe1"
@@ -46,6 +19,9 @@ services:
       - wan
     restart: always
     command: /sbin/init
+
+
+
 networks:
   lan:
     ipam:
