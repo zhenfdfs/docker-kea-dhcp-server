@@ -19,12 +19,41 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - kea-db_data:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d
+      - ./mysql:/docke
+
+      cr-entrypoint-initdb.d
     environment:
       MYSQL_DATABASE: dhcpdb
       MYSQL_ROOT_PASSWORD: dhcpdb
     restart: always
+version: '2'
 
+    restart: always
+  vcpe1:
+    image: registry.cn-hangzhou.aliyuncs.com/sdwan/vcpe:V501-v4.0.0-4.0.0-16-gbe90892
+    container_name: "vcpe1"
+    privileged: true
+    networks:
+      - lan
+      - wan
+    restart: always
+    command: /sbin/init
+  vcpe2:
+    image: registry.cn-hangzhou.aliyuncs.com/sdwan/vcpe:V501-v4.0.0-4.0.0-16-gbe90892
+    container_name: "vcpe2"
+    privileged: true
+    networks:
+      - lan
+      - wan
+    restart: always
+    command: /sbin/init
+networks:
+  lan:
+    ipam:
+      driver: default
+  wan:
+    ipam:
+      driver: default
 volumes:
   kea-db_data:
 
